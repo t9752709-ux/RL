@@ -3,10 +3,10 @@ const moveDone = document.querySelector('#overlayMoveDone');
 const resizeHandle = document.querySelector('#overlayResizeHandle');
 
 const LAYOUT_SIZES = {
-  column: { width: 230, height: 234 },
-  tiles: { width: 312, height: 164 },
-  bar: { width: 520, height: 82 },
-  'accent-bar': { width: 760, height: 102 }
+  'accent-bar': { width: 760, height: 102 },
+  'accent-grid': { width: 450, height: 190 },
+  'accent-stack': { width: 270, height: 370 },
+  'accent-slim': { width: 900, height: 72 }
 };
 const MIN_SCALE = 40;
 const MAX_SCALE = 160;
@@ -36,7 +36,7 @@ resizeHandle.addEventListener('pointerdown', (event) => {
   resizeHandle.setPointerCapture(event.pointerId);
   const startX = event.clientX;
   const startScale = Number(appState.settings.overlayScale) || 100;
-  const layout = Object.prototype.hasOwnProperty.call(LAYOUT_SIZES, appState.settings.overlayLayout) ? appState.settings.overlayLayout : 'column';
+  const layout = Object.prototype.hasOwnProperty.call(LAYOUT_SIZES, appState.settings.overlayLayout) ? appState.settings.overlayLayout : 'accent-bar';
   const pixelsPerPercent = LAYOUT_SIZES[layout].width / 100;
   let lastScale = startScale;
 

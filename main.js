@@ -27,7 +27,7 @@ const DEFAULT_STATE = {
     overlayOffsetY: 0,
     overlayStyle: 'glass',
     overlayScale: 100,
-    overlayLayout: 'column',
+    overlayLayout: 'accent-bar',
     overlayOpacity: 65,
     overlayBounds: null,
     overlayMovable: false,
@@ -77,10 +77,10 @@ let localIdsScannedAt = 0;
 let controllerStatus = { connected: false, name: '' };
 
 const OVERLAY_LAYOUT_SIZES = {
-  column: { width: 230, height: 234 },
-  tiles: { width: 312, height: 164 },
-  bar: { width: 520, height: 82 },
-  'accent-bar': { width: 760, height: 102 }
+  'accent-bar': { width: 760, height: 102 },
+  'accent-grid': { width: 450, height: 190 },
+  'accent-stack': { width: 270, height: 370 },
+  'accent-slim': { width: 900, height: 72 }
 };
 const OVERLAY_MIN_SCALE = 40;
 const OVERLAY_MAX_SCALE = 160;
@@ -130,7 +130,7 @@ function normalizeOverlayOpacity(value) {
 }
 
 function normalizeOverlayLayout(value) {
-  return ['column', 'tiles', 'bar', 'accent-bar'].includes(value) ? value : 'column';
+  return ['accent-bar', 'accent-grid', 'accent-stack', 'accent-slim'].includes(value) ? value : 'accent-bar';
 }
 
 function overlayLayoutSize(value) {

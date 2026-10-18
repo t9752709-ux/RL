@@ -116,7 +116,7 @@
     const overlayOpacity = Number.isFinite(Number(settings.overlayOpacity))
       ? Math.min(100, Math.max(20, Math.round(Number(settings.overlayOpacity))))
       : 65;
-    const overlayLayout = ['column', 'tiles', 'bar', 'accent-bar'].includes(settings.overlayLayout) ? settings.overlayLayout : 'column';
+    const overlayLayout = ['accent-bar', 'accent-grid', 'accent-stack', 'accent-slim'].includes(settings.overlayLayout) ? settings.overlayLayout : 'accent-bar';
     const overlayMovable = Boolean(settings.overlayMovable);
     const overlayStyle = ['glass', 'minimal', 'neon'].includes(settings.overlayStyle) ? settings.overlayStyle : 'glass';
     const sessionMatchesMode = Boolean(session.active) && String(session.playlistId || '') === playlistId;
@@ -161,11 +161,12 @@
 
   function render(rootElement, view) {
     if (!rootElement || !view) return;
-    const layoutSizes = { column: { width: 230, height: 234 }, tiles: { width: 312, height: 164 }, bar: { width: 520, height: 82 }, 'accent-bar': { width: 760, height: 102 } };
-    const layoutSize = layoutSizes[view.overlayLayout] || layoutSizes.column;
+    const layoutSizes = { 'accent-bar': { width: 760, height: 102 }, 'accent-grid': { width: 450, height: 190 }, 'accent-stack': { width: 270, height: 370 }, 'accent-slim': { width: 900, height: 72 } };
+    const layoutSize = layoutSizes[view.overlayLayout] || layoutSizes['accent-bar'];
     rootElement.dataset.style = view.overlayStyle;
     rootElement.dataset.corner = view.overlayCorner;
     rootElement.dataset.layout = view.overlayLayout;
+    rootElement.dataset.streakType = view.streakType || 'none';
     rootElement.style.setProperty('--overlay-scale', String(view.overlayScale / 100));
     rootElement.style.setProperty('--overlay-opacity', String(view.overlayOpacity / 100));
     rootElement.style.setProperty('--layout-width', `${layoutSize.width}px`);

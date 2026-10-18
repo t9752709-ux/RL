@@ -8,10 +8,10 @@ const num = (value, fallback = 0) => Number.isFinite(Number(value)) ? Math.round
 const signed = (value) => `${value > 0 ? '+' : value < 0 ? '−' : ''}${Math.abs(value)}`;
 const PLAYLIST_LABELS = { '10': '1v1', '11': '2v2', '13': '3v3' };
 const OVERLAY_SIZES = {
-  column: { width: 230, height: 234 },
-  tiles: { width: 312, height: 164 },
-  bar: { width: 520, height: 82 },
-  'accent-bar': { width: 760, height: 102 }
+  'accent-bar': { width: 760, height: 102 },
+  'accent-grid': { width: 450, height: 190 },
+  'accent-stack': { width: 270, height: 370 },
+  'accent-slim': { width: 900, height: 72 }
 };
 
 function showToast(message) {
@@ -40,7 +40,7 @@ function render() {
   const delta = sessionDelta();
   const active = Boolean(session.active);
   const overlayPlaylistId = String(settings.overlayPlaylistId || '11');
-  const overlayLayout = ['column', 'tiles', 'bar', 'accent-bar'].includes(settings.overlayLayout) ? settings.overlayLayout : 'column';
+  const overlayLayout = ['accent-bar', 'accent-grid', 'accent-stack', 'accent-slim'].includes(settings.overlayLayout) ? settings.overlayLayout : 'accent-bar';
   const sessionTag = $('#sessionTag');
   sessionTag.classList.toggle('active', active);
   sessionTag.querySelector('span:last-child').textContent = active ? 'Session en cours' : 'Session inactive';
@@ -118,7 +118,7 @@ function renderOverlayPreview(state = appState) {
   if (!state) return;
   window.RallyOverlay.renderState($('#previewWidget'), state);
   const scale = Math.min(160, Math.max(40, num(state.settings.overlayScale, 100))) / 100;
-  const layout = ['column', 'tiles', 'bar', 'accent-bar'].includes(state.settings.overlayLayout) ? state.settings.overlayLayout : 'column';
+  const layout = ['accent-bar', 'accent-grid', 'accent-stack', 'accent-slim'].includes(state.settings.overlayLayout) ? state.settings.overlayLayout : 'accent-bar';
   const size = OVERLAY_SIZES[layout];
   $('#overlayDimensions').textContent = `${Math.round(size.width * scale)} × ${Math.round(size.height * scale)} px`;
 }
