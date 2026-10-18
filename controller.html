@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self';">
+  <link rel="stylesheet" href="controller.css">
+  <title>Overlay RL · Manette</title>
+</head>
+<body>
+  <main class="controller-stage" id="controllerStage" aria-label="Overlay de manette">
+    <img class="controller-skin" src="controller-skin.png" alt="Manette PlayStation 4 rouge et blanche">
+    <svg class="input-layer" viewBox="0 0 1012 753" aria-hidden="true">
+      <path class="state trigger-state" data-button="6" d="M137 117C144 88 141 37 162 15 181 -4 215 -4 236 15 257 35 255 85 261 117Z"/>
+      <path class="state trigger-state" data-button="7" d="M751 117C758 85 755 35 776 15 797 -4 831 -4 850 15 871 37 868 88 875 117Z"/>
+      <path class="state shoulder-state" data-button="4" d="M137 124Q199 115 261 124V148H137Z"/>
+      <path class="state shoulder-state" data-button="5" d="M751 124Q813 115 875 124V148H751Z"/>
+
+      <ellipse class="state small-state" data-button="8" cx="302" cy="211" rx="18" ry="29"/>
+      <ellipse class="state small-state" data-button="9" cx="709" cy="211" rx="18" ry="29"/>
+      <rect class="state touchpad-state" data-button="17" x="340" y="156" width="331" height="188" rx="19"/>
+
+      <path class="state dpad-state" data-button="12" d="M172 238Q172 229 183 229H205Q216 229 216 240V276H172Z"/>
+      <path class="state dpad-state" data-button="15" d="M226 285H261Q272 285 272 296V319Q272 330 261 330H226Z"/>
+      <path class="state dpad-state" data-button="13" d="M172 337H216V374Q216 386 205 386H183Q172 386 172 374Z"/>
+      <path class="state dpad-state" data-button="14" d="M115 296Q115 285 126 285H161V330H126Q115 330 115 319Z"/>
+
+      <circle class="state face-state triangle-state" data-button="3" cx="817" cy="238" r="38"/>
+      <circle class="state face-state square-state" data-button="2" cx="745" cy="310" r="38"/>
+      <circle class="state face-state circle-state" data-button="1" cx="888" cy="310" r="38"/>
+      <circle class="state face-state cross-state" data-button="0" cx="817" cy="381" r="38"/>
+
+      <g id="leftStickCap" class="stick-cap" data-button="10" transform="translate(0 0)">
+        <image href="controller-stick-left.png" x="278" y="382" width="132" height="132"/>
+      </g>
+      <g id="rightStickCap" class="stick-cap" data-button="11" transform="translate(0 0)">
+        <image href="controller-stick-right.png" x="599" y="382" width="132" height="132"/>
+      </g>
+      <circle class="state ps-state" data-button="16" cx="505" cy="456" r="27"/>
+    </svg>
+  </main>
+  <script src="controller.js"></script>
+</body>
+</html>

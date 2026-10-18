@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:;">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body class="overlay-window">
+  <div class="overlay-move-bar" id="overlayMoveBar"><span>Glisse pour déplacer</span><button type="button" id="overlayMoveDone" title="Terminer le placement">✓</button></div>
+  <div class="overlay-card" id="overlayCard">
+    <div class="overlay-metric mmr-metric">
+      <span class="metric-orb rank-orb"><img class="rank-icon current-rank-icon" data-field="rank-icon" alt="" hidden></span>
+      <div class="metric-copy"><small><span data-field="playlist">2V2</span> · MMR</small><b data-field="rank">Rang en attente</b><strong data-field="mmr">—</strong><small class="next-rank-name" data-field="next-rank"></small><span class="metric-delta" data-field="session-delta">—</span><div class="rank-progress"><span></span></div></div>
+    </div>
+    <div class="overlay-metric streak-metric"><span class="metric-orb streak-orb">↗</span><div class="metric-copy"><small>STREAK</small><strong data-field="streak">0</strong></div></div>
+    <div class="overlay-metric wins-metric"><span class="metric-orb wins-orb">✓</span><div class="metric-copy"><small>WINS</small><strong data-field="wins">0</strong></div></div>
+    <div class="overlay-metric losses-metric"><span class="metric-orb losses-orb">×</span><div class="metric-copy"><small>LOSSES</small><strong data-field="losses">0</strong></div></div>
+  </div>
+  <div class="overlay-resize-handle" id="overlayResizeHandle" title="Redimensionner (glisser)" aria-hidden="true"></div>
+  <script src="rank-utils.js"></script>
+  <script src="overlay-core.js"></script>
+  <script src="overlay.js"></script>
+</body>
+</html>

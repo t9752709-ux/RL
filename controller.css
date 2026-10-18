@@ -1,0 +1,23 @@
+*{box-sizing:border-box}
+html,body{margin:0;width:100vw;height:100vh;overflow:hidden;background:transparent}
+body{-webkit-app-region:drag}
+.controller-stage{position:relative;width:100vw;height:100vh;background:transparent;-webkit-app-region:drag}
+.controller-stage.moving{cursor:move}
+.controller-skin{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;-webkit-app-region:drag;user-select:none;pointer-events:none}
+.input-layer{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible;-webkit-app-region:drag;pointer-events:none}
+.state{opacity:0;transition:opacity .06s ease;pointer-events:none}
+.state.active{opacity:.72}
+.trigger-state{fill:#ff5360;stroke:#fff0f1;stroke-width:2}
+.shoulder-state{fill:#ff5964;stroke:#fff;stroke-width:1.5}
+.small-state{fill:#ff616b;stroke:#fff;stroke-width:2}
+.touchpad-state{fill:#ff5360;stroke:#ffb7bc;stroke-width:3}
+.dpad-state{fill:#ff4a56;stroke:#ffc1c5;stroke-width:2}
+.face-state{fill:#ff4a56;fill-opacity:.34;stroke:#fff;stroke-width:4}
+.triangle-state{stroke:#67ffc8}
+.square-state{stroke:#ff9bfa}
+.circle-state{stroke:#ff6b79}
+.cross-state{stroke:#86c6ff}
+.stick-cap{transition:transform .025s linear;pointer-events:none}
+.stick-cap image{pointer-events:none}
+.stick-cap.active image{filter:brightness(.88)}
+.ps-state{fill:#fff;stroke:#ff4253;stroke-width:4}

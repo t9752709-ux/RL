@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:;">
+  <title>Overlay RL</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div class="stage" id="desktopStage">
+  <div class="shell">
+    <div class="window-titlebar"><span><i>ϟ</i> Overlay RL <small>by SourOneee</small></span><div class="window-controls"><button id="windowMinimize" aria-label="Réduire">−</button><button id="windowMaximize" aria-label="Agrandir">□</button><button id="windowClose" aria-label="Fermer">×</button></div></div>
+    <div class="app-window-body">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">ϟ</div><div><strong>OVERLAY RL</strong><span>BY SOURONEEE</span></div></div>
+      <div class="side-label">PILOTAGE</div>
+      <button class="nav-item active" data-page="session"><span class="nav-icon">⌂</span> Accueil <span class="nav-arrow">›</span></button>
+      <button class="nav-item" data-page="matches"><span class="nav-icon">◷</span> Historique <span class="nav-arrow">›</span></button>
+      <button class="nav-item" data-page="overlay"><span class="nav-icon">▣</span> Overlay <span class="nav-arrow">›</span></button>
+      <div class="side-label nav-spacer">CONFIGURATION</div>
+      <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span> Réglages <span class="nav-arrow">›</span></button>
+      <div class="sidebar-bottom">
+        <div class="sidebar-game"><span class="status-dot" id="sidebarDot"></span><div><strong id="sidebarConnection">En attente du jeu</strong><small>API locale Rocket League</small></div></div>
+        <div class="sidebar-foot"><span class="brand-mark mini">R</span><span>Version <span id="appVersion">1.5.7</span></span><span class="online-mark">●</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div><div class="eyebrow" id="headerEyebrow">DASHBOARD JOUEUR</div><h1 id="pageTitle">Accueil</h1></div>
+        <div class="topbar-right"><span class="connection-pill" id="connectionPill"><i class="status-dot"></i><span>Connexion…</span></span><span class="avatar">RL</span></div>
+      </header>
+
+      <section class="page" id="sessionPage">
+        <div class="welcome-row"><div><div class="eyebrow">SUIVI DE SESSION</div><h2>Ta session</h2><p class="muted">Stats de Rocket League, mises à jour automatiquement.</p></div><div class="session-tag" id="sessionTag"><span class="tag-dot"></span><span>Session inactive</span></div></div>
+
+        <div class="stats-grid">
+          <article class="stat-card mmr-card"><div class="card-kicker"><span>MMR DE LA SESSION</span><label class="goal-select-wrap" for="sessionGoalSelect">OBJECTIF <select id="sessionGoalSelect" aria-label="Objectif MMR de la session"><option value="25">+25</option><option value="50" selected>+50</option><option value="100">+100</option></select></label></div><div class="stat-main"><strong id="mmrDelta">—</strong><span id="mmrCaption">Lance une session</span></div><div class="mmr-track"><span id="mmrTrackFill"></span></div><div class="stat-foot"><span>Départ <b id="startMmrLabel">—</b></span><span>Actuel <b id="currentMmrLabel">—</b></span></div></article>
+          <article class="stat-card win-stat"><div class="card-kicker">VICTOIRES <span class="card-symbol">↗</span></div><div class="record-main"><strong class="win-color" id="winsCount">0</strong><span class="record-caption">matchs gagnés</span></div><div class="card-bottom-note"><span class="mini-dot win-dot"></span><span id="winrate">En attente du premier match</span></div></article>
+          <article class="stat-card loss-stat"><div class="card-kicker">DÉFAITES <span class="card-symbol">↘</span></div><div class="record-main"><strong class="loss-color" id="lossesCount">0</strong><span class="record-caption">matchs perdus</span></div><div class="card-bottom-note"><span class="mini-dot loss-dot"></span><span>Résultats de la session</span></div></article>
+          <article class="stat-card streak-card"><div class="card-kicker">SÉRIE ACTUELLE <span class="card-symbol">ϟ</span></div><div class="streak-main"><strong id="streakCount">—</strong><div><b id="streakName">Aucune série</b><span id="streakCaption">Prête à commencer</span></div></div><div class="streak-bars" id="streakBars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel match-panel">
+            <div class="panel-heading"><div><span class="eyebrow">EN UN CLIC</span><h3>Résultat du match</h3></div><span class="auto-badge" id="autoBadge"><span class="status-dot"></span> AUTO</span></div>
+            <p class="muted small">Les résultats arrivent automatiquement quand l’API du jeu est activée.</p>
+            <div class="result-buttons"><button class="result-button win-button" id="manualWin"><span class="result-icon">+</span><span><b>Ajouter une victoire</b><small>Correction manuelle</small></span></button><button class="result-button loss-button" id="manualLoss"><span class="result-icon">−</span><span><b>Ajouter une défaite</b><small>Correction manuelle</small></span></button></div>
+            <div class="match-panel-foot"><span id="matchHint">Démarre une session pour suivre tes matchs.</span><button class="text-button" data-page-link="overlay">Configurer l’overlay <span>→</span></button></div>
+          </section>
+
+        </div>
+
+        <div class="lower-grid">
+          <section class="panel mmr-entry-panel"><div class="panel-heading"><div><span class="eyebrow">SYNCHRONISATION</span><h3>Suivi automatique</h3></div><button class="tracker-link" id="trackerOpenButton">Ouvrir Tracker ↗</button></div><form class="mmr-form" id="mmrForm"><label for="currentMmrInput">Ton MMR actuel</label><div class="input-action"><input id="currentMmrInput" type="number" min="0" max="99999" placeholder="Ex. 1150" required><button type="submit" class="ghost-button" id="updateMmrButton">Mettre à jour</button></div></form><div class="tracker-status" id="trackerStatus" aria-live="polite">MMR Tracker non synchronisé</div><button class="ghost-button tracker-sync-button" id="trackerSyncButton" hidden>Synchroniser le MMR</button><button class="start-session-button" id="sessionAction">Démarrer une session <span>→</span></button><button class="end-session-link" id="endSessionButton" hidden>Terminer et réinitialiser</button></section>
+        </div>
+
+        <section class="players-panel panel" id="playersPanel" hidden><div class="panel-heading"><div><span class="eyebrow">IDENTIFICATION</span><h3>Qui es-tu dans le match ?</h3></div><span class="setup-step">01 / 01</span></div><p class="muted small">Choisis ton compte une fois. Overlay RL s’en servira ensuite pour reconnaître ton équipe automatiquement.</p><div class="players-list" id="playersList"></div></section>
+      </section>
+
+      <section class="page secondary-page" id="matchesPage" hidden>
+        <div class="welcome-row"><div><div class="eyebrow">RÉSULTATS DE LA SESSION</div><h2>Historique des matchs</h2><p class="muted">Tes victoires, défaites et variations de MMR détectées.</p></div><span class="recent-count" id="recentCount">0 match</span></div>
+        <section class="panel recent-panel history-page-panel"><div class="panel-heading"><div><span class="eyebrow">ACTIVITÉ RÉCENTE</span><h3>Matchs suivis</h3></div><span class="auto-badge"><span class="status-dot online"></span> STATS API</span></div><div class="history-list" id="historyList"><div class="empty-history"><span>◌</span><div><b>Pas encore de match</b><small>Les résultats apparaîtront ici.</small></div></div></div></section>
+        <div class="history-note panel"><span class="history-note-icon">i</span><div><b>À propos du MMR</b><p>Les résultats viennent de l’API locale du jeu. Le MMR est synchronisé depuis Tracker et peut être retardé ; une variation peut être estimée.</p></div></div>
+      </section>
+
+      <section class="page secondary-page" id="settingsPage" hidden>
+        <div class="welcome-row"><div><div class="eyebrow">CONFIGURATION DU JEU</div><h2>Connexion à Rocket League</h2><p class="muted">Overlay RL détecte le jeu et ton compte pour suivre les parties classées.</p></div><span class="auto-badge"><span class="status-dot" id="settingsStatusDot"></span> LOCAL</span></div>
+        <div class="settings-grid">
+          <section class="panel setup-panel">
+            <div class="panel-heading"><div><span class="eyebrow">CONNEXION AU JEU</span><h3>Suivi automatique</h3></div><span class="setup-step">AUTOMATIQUE</span></div>
+            <p class="muted small">Overlay RL configure l’API du jeu et reconnaît automatiquement ton compte Steam ou Epic pendant un match.</p>
+            <div class="setup-state" id="setupState"><span class="setup-icon">⌁</span><div><b>API Stats du jeu</b><span>Configuration automatique en attente</span></div></div>
+            <button class="primary-button setup-button" id="setupButton">Configurer Rocket League <span>→</span></button>
+            <div class="tiny-note">Le jeu doit être relancé après l’activation.</div>
+          </section>
+          <section class="panel settings-info-panel"><div class="panel-heading"><div><span class="eyebrow">DONNÉES ET CONFIDENTIALITÉ</span><h3>Suivi sur ton PC</h3></div><span class="card-symbol">⌁</span></div><p class="muted small">Les événements de match sont lus depuis l’API locale. Pour rechercher le MMR, Overlay RL transmet l’identifiant du joueur aux services de classement utilisés.</p><div class="settings-details"><div><span>État du jeu</span><b id="settingsGameState">En attente du jeu</b></div><div><span>Compte détecté</span><b id="settingsPlayerName">Recherche automatique</b></div><div><span>MMR</span><b>Synchronisation Tracker</b></div></div><button class="tracker-link" id="settingsTrackerButton" type="button">Ouvrir Tracker ↗</button></section>
+        </div>
+      </section>
+
+      <section class="page" id="overlayPage" hidden>
+        <div class="welcome-row"><div><div class="eyebrow">AFFICHAGE EN JEU</div><h2>Overlay RL</h2><p class="muted">Choisis une disposition et place tes stats à l’écran.</p></div><label class="switch-wrap"><span id="overlaySwitchLabel">Overlay désactivé</span><input type="checkbox" id="overlayToggle"><span class="switch"></span></label></div>
+        <div class="overlay-layout">
+          <section class="panel overlay-preview-panel">
+            <div class="panel-heading"><div><span class="eyebrow">APERÇU</span><h3>Rendu à l’écran</h3></div><span class="preview-live"><i></i> EN DIRECT</span></div>
+            <div class="screen-preview">
+              <div class="preview-widget overlay-card" id="previewWidget">
+                <div class="overlay-metric mmr-metric"><span class="metric-orb rank-orb"><img class="rank-icon current-rank-icon" data-field="rank-icon" alt="" hidden></span><div class="metric-copy"><small><span data-field="playlist">2V2</span> · MMR</small><b data-field="rank">Rang en attente</b><strong data-field="mmr">—</strong><small class="next-rank-name" data-field="next-rank"></small><span class="metric-delta" data-field="session-delta"></span><div class="rank-progress"><span></span></div></div></div>
+                <div class="overlay-metric streak-metric"><span class="metric-orb streak-orb">↗</span><div class="metric-copy"><small>STREAK</small><strong data-field="streak">0</strong></div></div>
+                <div class="overlay-metric wins-metric"><span class="metric-orb wins-orb">✓</span><div class="metric-copy"><small>WINS</small><strong data-field="wins">0</strong></div></div>
+                <div class="overlay-metric losses-metric"><span class="metric-orb losses-orb">×</span><div class="metric-copy"><small>LOSSES</small><strong data-field="losses">0</strong></div></div>
+              </div>
+            </div>
+            <div class="preview-foot"><span><i class="status-dot"></i> Stats actualisées</span><span id="overlayDimensions">230 × 234 px</span></div>
+          </section>
+          <section class="overlay-options">
+            <div class="panel option-panel">
+              <div class="panel-heading"><div><span class="eyebrow">DISPOSITION</span><h3>Format de l’overlay</h3></div></div>
+              <label class="playlist-label" for="overlayLayoutSelect">Affichage</label><select id="overlayLayoutSelect" class="setting-select"><option value="column">Colonne · compact</option><option value="tiles">Cartes · 2 × 2</option><option value="bar">Barre · horizontale</option></select>
+              <div class="option-row"><div><b>Position en jeu</b><span>Coin de l’écran</span></div><div class="corner-picker" role="group" aria-label="Position de l’overlay"><button data-corner="top-left" aria-label="Haut gauche">↖</button><button class="selected" data-corner="top-right" aria-label="Haut droite">↗</button><button data-corner="bottom-left" aria-label="Bas gauche">↙</button><button data-corner="bottom-right" aria-label="Bas droite">↘</button></div></div>
+              <div class="option-row"><div><b>Placement</b><span>Déplace l’overlay dans le jeu.</span></div><button class="ghost-button" id="overlayMoveButton" type="button">Déplacer</button></div>
+              <label class="playlist-label" for="playlistSelect">Playlist Rocket League</label><div class="playlist-select-row"><select id="playlistSelect" class="setting-select"><option value="10">1v1 — Duel</option><option value="11">2v2 — Doubles</option><option value="13">3v3 — Standard</option></select><button class="ghost-button" id="refreshOverlayMmrButton" type="button">Actualiser</button></div>
+              <div class="overlay-adjust-row"><label for="overlayScaleInput"><span>Taille</span><output id="overlayScaleValue">100 %</output></label><input type="range" id="overlayScaleInput" min="40" max="160" step="5" value="100"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+      <footer class="app-footer"><span>OVERLAY RL <i>·</i> BY SOURONEEE</span><span>Rocket League</span></footer>
+    </main>
+    </div>
+  </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="rank-utils.js"></script>
+  <script src="overlay-core.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

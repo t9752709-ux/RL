@@ -1,0 +1,57 @@
+{
+  "name": "rally-rocket-league-session",
+  "version": "1.5.7",
+  "description": "Session tracker and desktop overlay for Rocket League",
+  "main": "main.js",
+  "author": "SourOneee",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "electron": "^44.7.1",
+    "electron-builder": "^26.15.3"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis --publish never",
+    "postdist": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/stage-local-update.ps1",
+    "release": "npm version patch --no-git-tag-version && npm run dist"
+  },
+  "build": {
+    "appId": "app.rally.rl-session",
+    "productName": "Overlay RL",
+    "directories": {
+      "output": "../"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "styles.css",
+      "app.js",
+      "rank-utils.js",
+      "overlay-core.js",
+      "overlay.html",
+      "overlay.css",
+      "overlay.js",
+      "controller.html",
+      "controller.css",
+      "controller.js",
+      "controller-skin.png",
+      "controller-stick-left.png",
+      "controller-stick-right.png",
+      "update-config.json",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "runAfterFinish": true
+    },
+    "artifactName": "Overlay-RL-Setup-v${version}.${ext}"
+  }
+}
