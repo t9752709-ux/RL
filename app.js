@@ -1,5 +1,6 @@
 let appState;
 let gameConnection = { connected: false, players: [], gameActive: false, message: 'En attente du jeu' };
+let controllerStatus = { connected: false, name: '' };
 let toastTimer;
 
 const $ = (selector) => document.querySelector(selector);
@@ -114,6 +115,18 @@ function render() {
   $('#overlayLayoutSelect').value = overlayLayout;
   $('#overlayMoveButton').textContent = settings.overlayMovable ? 'Terminer le placement' : 'Déplacer / redimensionner';
   $$('.corner-picker button').forEach((button) => button.classList.toggle('selected', button.dataset.corner === settings.overlayCorner));
+  const controllerVisible = Boolean(settings.controllerOverlayVisible);
+  const controllerScale = Math.min(100, Math.max(35, num(settings.controllerOverlayScale, 100)));
+  $('#controllerOverlayToggle').checked = controllerVisible;
+  $('#controllerStatus').textContent = controllerStatus.connected
+    ? `Manette connectée : ${controllerStatus.name}.`
+    : controllerVisible
+      ? 'Overlay actif · manette non détectée.'
+      : 'Manette non détectée. Connecte-la puis active l’affichage.';
+  $('#controllerScaleInput').value = String(controllerScale);
+  $('#controllerScaleValue').textContent = `${controllerScale} %`;
+  $('#controllerMoveButton').disabled = !controllerVisible;
+  $('#controllerMoveButton').textContent = settings.controllerOverlayMovable ? 'Terminer le placement' : 'Déplacer la manette';
   renderConnection();
 }
 
@@ -332,6 +345,39 @@ function wireEvents() {
     await window.rally.setOverlayVisible(event.target.checked);
     render();
   });
+  $('#controllerOverlayToggle').addEventListener('change', async (event) => {
+    try {
+      appState = await window.rally.setControllerOverlayVisible(event.target.checked);
+      render();
+      showToast(event.target.checked ? 'Overlay de manette activé.' : 'Overlay de manette désactivé.');
+    } catch (error) {
+      render();
+      showToast(error.message || 'Impossible de modifier l’overlay de manette.');
+    }
+  });
+  $('#controllerScaleInput').addEventListener('input', (event) => {
+    $('#controllerScaleValue').textContent = `${Number(event.target.value)} %`;
+  });
+  $('#controllerScaleInput').addEventListener('change', async (event) => {
+    try {
+      appState = await window.rally.setControllerOverlayScale(Number(event.target.value));
+      render();
+    } catch (error) {
+      render();
+      showToast(error.message || 'Impossible de modifier la taille de la manette.');
+    }
+  });
+  $('#controllerMoveButton').addEventListener('click', async () => {
+    try {
+      appState = await window.rally.setControllerOverlayMovable(!appState.settings.controllerOverlayMovable);
+      render();
+      showToast(appState.settings.controllerOverlayMovable
+        ? 'Glisse la manette à l’endroit voulu, puis termine le placement.'
+        : 'Position de la manette enregistrée.');
+    } catch (error) {
+      showToast(error.message || 'Impossible de déplacer la manette.');
+    }
+  });
   $$('.corner-picker button').forEach((button) => button.addEventListener('click', async () => {
     appState.settings.overlayCorner = button.dataset.corner;
     appState = await window.rally.saveState(appState);
@@ -353,6 +399,7 @@ function wireEvents() {
   });
   window.rally.onStateChanged((next) => { appState = next; render(); });
   window.rally.onConnectionChanged((next) => { gameConnection = next; render(); });
+  window.rally.onControllerStatus((next) => { controllerStatus = next; render(); });
 }
 
 async function recordManual(result) {
@@ -379,6 +426,7 @@ async function initialize() {
   appState = await window.rally.loadState();
   $('#appVersion').textContent = await window.rally.getAppVersion();
   gameConnection = await window.rally.getConnection();
+  controllerStatus = await window.rally.getControllerStatus();
   wireEvents();
   render();
   syncOverlayMmr(false);

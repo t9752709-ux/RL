@@ -104,6 +104,17 @@
               <label class="playlist-label" for="playlistSelect">Playlist Rocket League</label><div class="playlist-select-row"><select id="playlistSelect" class="setting-select"><option value="10">1v1 — Duel</option><option value="11">2v2 — Doubles</option><option value="13">3v3 — Standard</option></select><button class="ghost-button" id="refreshOverlayMmrButton" type="button">Actualiser</button></div>
               <div class="overlay-adjust-row"><label for="overlayScaleInput"><span>Taille</span><output id="overlayScaleValue">100 %</output></label><input type="range" id="overlayScaleInput" min="40" max="160" step="5" value="100"></div>
             </div>
+            <section class="panel controller-panel">
+              <div class="panel-heading"><div><span class="eyebrow">MANETTE</span><h3>Commandes en jeu</h3></div><span class="card-symbol">⌁</span></div>
+              <div class="controller-setting-row">
+                <div><b>Afficher la manette</b><span>Superposée à Rocket League</span></div>
+                <label class="mini-switch" aria-label="Afficher l’overlay de manette"><input type="checkbox" id="controllerOverlayToggle"><span></span></label>
+              </div>
+              <p class="controller-status" id="controllerStatus" role="status">Connecte une manette pour afficher ses commandes.</p>
+              <div class="controller-scale-row"><label for="controllerScaleInput">Taille</label><div class="controller-scale-control"><input type="range" id="controllerScaleInput" min="35" max="100" step="5" value="100"><output id="controllerScaleValue">100 %</output></div></div>
+              <button class="ghost-button controller-move-button" id="controllerMoveButton" type="button" disabled>Déplacer la manette</button>
+              <p class="controller-help">Active l’affichage, place la manette à l’écran, puis termine pour enregistrer sa position.</p>
+            </section>
           </section>
         </div>
       </section>
