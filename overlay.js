@@ -5,7 +5,8 @@ const resizeHandle = document.querySelector('#overlayResizeHandle');
 const LAYOUT_SIZES = {
   column: { width: 230, height: 234 },
   tiles: { width: 312, height: 164 },
-  bar: { width: 520, height: 82 }
+  bar: { width: 520, height: 82 },
+  'accent-bar': { width: 760, height: 102 }
 };
 const MIN_SCALE = 40;
 const MAX_SCALE = 160;

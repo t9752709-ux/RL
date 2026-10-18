@@ -79,7 +79,8 @@ let controllerStatus = { connected: false, name: '' };
 const OVERLAY_LAYOUT_SIZES = {
   column: { width: 230, height: 234 },
   tiles: { width: 312, height: 164 },
-  bar: { width: 520, height: 82 }
+  bar: { width: 520, height: 82 },
+  'accent-bar': { width: 760, height: 102 }
 };
 const OVERLAY_MIN_SCALE = 40;
 const OVERLAY_MAX_SCALE = 160;
@@ -129,7 +130,7 @@ function normalizeOverlayOpacity(value) {
 }
 
 function normalizeOverlayLayout(value) {
-  return ['column', 'tiles', 'bar'].includes(value) ? value : 'column';
+  return ['column', 'tiles', 'bar', 'accent-bar'].includes(value) ? value : 'column';
 }
 
 function overlayLayoutSize(value) {

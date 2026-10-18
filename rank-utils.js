@@ -116,7 +116,7 @@
     const overlayOpacity = Number.isFinite(Number(settings.overlayOpacity))
       ? Math.min(100, Math.max(20, Math.round(Number(settings.overlayOpacity))))
       : 65;
-    const overlayLayout = ['column', 'tiles', 'bar'].includes(settings.overlayLayout) ? settings.overlayLayout : 'column';
+    const overlayLayout = ['column', 'tiles', 'bar', 'accent-bar'].includes(settings.overlayLayout) ? settings.overlayLayout : 'column';
     const overlayMovable = Boolean(settings.overlayMovable);
     const overlayStyle = ['glass', 'minimal', 'neon'].includes(settings.overlayStyle) ? settings.overlayStyle : 'glass';
     const sessionMatchesMode = Boolean(session.active) && String(session.playlistId || '') === playlistId;
@@ -161,7 +161,7 @@
 
   function render(rootElement, view) {
     if (!rootElement || !view) return;
-    const layoutSizes = { column: { width: 230, height: 234 }, tiles: { width: 312, height: 164 }, bar: { width: 520, height: 82 } };
+    const layoutSizes = { column: { width: 230, height: 234 }, tiles: { width: 312, height: 164 }, bar: { width: 520, height: 82 }, 'accent-bar': { width: 760, height: 102 } };
     const layoutSize = layoutSizes[view.overlayLayout] || layoutSizes.column;
     rootElement.dataset.style = view.overlayStyle;
     rootElement.dataset.corner = view.overlayCorner;

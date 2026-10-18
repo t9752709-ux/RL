@@ -11,7 +11,7 @@ Prototype Windows pour suivre automatiquement les victoires, défaites, séries 
 - Récupère le MMR via le relais communautaire fourni, puis réessaie automatiquement après les matchs.
 - Affiche, pour le mode choisi, l'emblème du rang et la progression vers le rang suivant à partir des données Tracker.
 - Permet de choisir un objectif de session de +25, +50 ou +100 MMR et affiche la progression dans Overlay RL et l'overlay.
-- Permet de choisir parmi trois styles d'overlay, de régler sa taille et de décaler sa position horizontalement et verticalement.
+- Permet de choisir parmi quatre formats d'overlay, de régler sa taille et de décaler sa position horizontalement et verticalement.
 - Affiche en option un overlay de manette compatible DualSense : sticks animés, croix directionnelle, boutons, gâchettes et clics de stick.
 - Laisse déplacer l'overlay manette à la souris depuis sa barre supérieure ; une fois verrouillé, il laisse passer les clics vers Rocket League.
 
