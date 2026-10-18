@@ -1398,7 +1398,17 @@ ipcMain.handle('state:save', (_event, next) => {
   persistState();
   return state;
 });
-ipcMain.handle('game:connection', () => connection);
+ipcMain.handle('game:connection', () => {
+  // The UI can request its initial state while the WebSocket upgrade is
+  // completing. Use the socket's actual state so the status cannot stay stale.
+  const socketConnected = Boolean(statsSocket && statsSocket.readyState === WebSocket.OPEN);
+  if (socketConnected && !connection.connected) {
+    updateConnection({ connected: true, message: 'Connecté à Rocket League' });
+  } else if (!socketConnected && connection.connected) {
+    updateConnection({ connected: false, gameActive: false, message: 'En attente de Rocket League…' });
+  }
+  return connection;
+});
 ipcMain.handle('controller:getStatus', () => controllerStatus);
 ipcMain.on('controller:status', (_event, status) => {
   const next = {

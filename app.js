@@ -425,9 +425,11 @@ async function syncOverlayMmr(showMessage = false) {
 async function initialize() {
   appState = await window.rally.loadState();
   $('#appVersion').textContent = await window.rally.getAppVersion();
-  gameConnection = await window.rally.getConnection();
   controllerStatus = await window.rally.getControllerStatus();
   wireEvents();
+  // Subscribe before reading the initial connection state so a fast WebSocket
+  // connection cannot be missed while the renderer is still initializing.
+  gameConnection = await window.rally.getConnection();
   render();
   syncOverlayMmr(false);
 }
