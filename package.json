@@ -1,6 +1,6 @@
 {
   "name": "rally-rocket-league-session",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Session tracker and desktop overlay for Rocket League",
   "main": "main.js",
   "author": "SourOneee",
