@@ -58,17 +58,19 @@ function render() {
   $('#currentMmrLabel').textContent = session.currentMmr === null ? '—' : num(session.currentMmr);
   $('#winsCount').textContent = num(session.wins);
   $('#lossesCount').textContent = num(session.losses);
-  $('#winrate').textContent = played ? `${Math.round((session.wins / played) * 100)} % de victoires` : 'En attente du premier match';
-  $('#streakCount').textContent = session.streakCount ? session.streakCount : '—';
+  $('#winrate').textContent = played ? `${Math.round((session.wins / played) * 100)} % de victoires` : '0 % des matchs';
+  $('#lossrate').textContent = played ? `${Math.round((session.losses / played) * 100)} % des matchs` : '0 % des matchs';
+  $('#streakCount').textContent = session.streakCount ? `${session.streakType === 'loss' ? '−' : '+'}${session.streakCount}` : '—';
   $('#streakName').textContent = session.streakType === 'win' ? 'Série de victoires' : session.streakType === 'loss' ? 'Série de défaites' : 'Aucune série';
-  $('#streakCaption').textContent = session.streakType ? `Match${session.streakCount > 1 ? 's' : ''} consécutif${session.streakCount > 1 ? 's' : ''}` : 'Prête à commencer';
+  $('#streakCaption').textContent = `${session.streakCount || 0} match${session.streakCount === 1 ? '' : 's'} consécutif${session.streakCount === 1 ? '' : 's'}`;
+  const recentResults = session.history.slice(0, 5);
+  $('#recentForm').innerHTML = recentResults.length
+    ? recentResults.map((match) => `<span class="form-result ${match.result === 'win' ? 'win' : 'loss'}" title="${match.result === 'win' ? 'Victoire' : 'Défaite'}">${match.result === 'win' ? 'V' : 'D'}</span>`).join('')
+    : '<span class="recent-form-empty">Aucun match</span>';
   const fill = delta === null ? 0 : Math.min(100, Math.max(0, (delta / sessionGoal) * 100));
   $('#mmrTrackFill').style.width = `${fill}%`;
   $('.mmr-card').classList.toggle('goal-reached', goalReached);
   $('#sessionGoalSelect').value = String(sessionGoal);
-  $$('#streakBars i').forEach((bar, index) => {
-    bar.className = index < Math.min(8, session.streakCount) ? `on-${session.streakType}` : '';
-  });
 
   $('#currentMmrInput').value = session.currentMmr === null ? '' : num(session.currentMmr);
   const trackerMode = settings.mmrMode === 'tracker';
@@ -85,18 +87,19 @@ function render() {
   $('.playlist-label').hidden = false;
   $('#sessionAction').hidden = active;
   $('#endSessionButton').hidden = !active;
+  $('#resetSessionStatsButton').hidden = !active;
+  $('#copySessionSummaryButton').hidden = !played;
   $('.result-buttons').hidden = !active;
-  $('#sessionAction').textContent = 'Démarrer la session →';
+  $('#sessionAction').textContent = 'Démarrer une session';
   $('#winButtonMmr').textContent = settings.mmrMode === 'estimate' ? `+${num(settings.winMmr, 9)} MMR estimé` : 'Résultat auto';
   $('#lossButtonMmr').textContent = settings.mmrMode === 'estimate' ? `−${num(settings.lossMmr, 9)} MMR estimé` : 'Résultat auto';
   $('#matchHint').textContent = !gameConnection.connected
-    ? 'Ouvre Rocket League : Overlay RL attend le jeu et commencera le suivi tout seul.'
+    ? 'Ouvre Rocket League pour activer le suivi.'
     : !settings.playerId
-      ? 'Je cherche ton compte dans la partie et sur ce PC.'
+      ? 'Compte en cours de détection.'
       : gameConnection.gameActive
-        ? 'Partie classée détectée — résultats et MMR suivis automatiquement.'
-        : 'Compte reconnu : le suivi commencera automatiquement au prochain match classé.';
-  $('#autoBadge').innerHTML = `<span class="status-dot ${gameConnection.connected ? 'online' : ''}"></span> ${gameConnection.connected ? 'CONNECTÉ' : 'AUTO'}`;
+        ? 'Résultat détecté à la fin du match.'
+        : 'Suivi prêt.';
   $('#recentCount').textContent = `${session.history.length} match${session.history.length === 1 ? '' : 's'}`;
   renderHistory(session.history);
 
@@ -181,7 +184,7 @@ async function saveSettings(patch) {
 
 function showPage(pageName) {
   const pages = {
-    session: { title: 'Accueil', eyebrow: 'DASHBOARD JOUEUR' },
+    session: { title: 'Accueil', eyebrow: 'SESSION' },
     matches: { title: 'Historique', eyebrow: 'RÉSULTATS DE SESSION' },
     overlay: { title: 'Overlay', eyebrow: 'PERSONNALISE TON AFFICHAGE' },
     settings: { title: 'Réglages', eyebrow: 'CONNEXION AU JEU' }
@@ -244,7 +247,7 @@ function wireEvents() {
           return;
         }
         appState = await window.rally.startSession(mmrValue);
-        showToast('Session démarrée. Bonne chance !');
+        showToast('Session démarrée.');
       }
       render();
     } catch (error) {
@@ -255,6 +258,32 @@ function wireEvents() {
     appState = await window.rally.resetSession();
     render();
     showToast('Session terminée.');
+  });
+  $('#resetSessionStatsButton').addEventListener('click', async () => {
+    if (!appState.session.active || !window.confirm('Remettre victoires, défaites, série et historique à zéro ? La session restera active.')) return;
+    try {
+      appState = await window.rally.clearSessionStats();
+      render();
+      showToast('Stats remises à zéro.');
+    } catch (error) {
+      showToast(error.message || 'Impossible de réinitialiser les stats.');
+    }
+  });
+  $('#copySessionSummaryButton').addEventListener('click', async () => {
+    const session = appState.session;
+    const playlist = PLAYLIST_LABELS[String(session.playlistId || appState.settings.playlistId || '11')] || 'Rocket League';
+    const played = num(session.wins) + num(session.losses);
+    const winrate = played ? Math.round((num(session.wins) / played) * 100) : 0;
+    const delta = sessionDelta();
+    const streak = session.streakCount ? ` · série ${signed(session.streakType === 'loss' ? -session.streakCount : session.streakCount)}` : '';
+    const mmr = delta === null ? '' : ` · ${signed(delta)} MMR`;
+    const summary = `Overlay RL · ${playlist} : ${num(session.wins)}V-${num(session.losses)}D (${winrate} %${mmr}${streak})`;
+    try {
+      await window.rally.copyText(summary);
+      showToast('Bilan copié.');
+    } catch (error) {
+      showToast(error.message || 'Impossible de copier le bilan.');
+    }
   });
   $('#mmrForm').addEventListener('submit', async (event) => {
     event.preventDefault();

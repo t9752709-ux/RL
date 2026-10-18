@@ -34,27 +34,27 @@
       </header>
 
       <section class="page" id="sessionPage">
-        <div class="welcome-row"><div><div class="eyebrow">SUIVI DE SESSION</div><h2>Ta session</h2><p class="muted">Stats de Rocket League, mises à jour automatiquement.</p></div><div class="session-tag" id="sessionTag"><span class="tag-dot"></span><span>Session inactive</span></div></div>
+        <div class="welcome-row"><div><div class="eyebrow">SESSION</div><h2>Ta session</h2><p class="muted">Résultats et MMR de la session en cours.</p></div><div class="session-tag" id="sessionTag"><span class="tag-dot"></span><span>Session inactive</span></div></div>
 
         <div class="stats-grid">
           <article class="stat-card mmr-card"><div class="card-kicker"><span>MMR DE LA SESSION</span><label class="goal-select-wrap" for="sessionGoalSelect">OBJECTIF <select id="sessionGoalSelect" aria-label="Objectif MMR de la session"><option value="25">+25</option><option value="50" selected>+50</option><option value="100">+100</option></select></label></div><div class="stat-main"><strong id="mmrDelta">—</strong><span id="mmrCaption">Lance une session</span></div><div class="mmr-track"><span id="mmrTrackFill"></span></div><div class="stat-foot"><span>Départ <b id="startMmrLabel">—</b></span><span>Actuel <b id="currentMmrLabel">—</b></span></div></article>
           <article class="stat-card win-stat"><div class="card-kicker">VICTOIRES <span class="card-symbol">↗</span></div><div class="record-main"><strong class="win-color" id="winsCount">0</strong><span class="record-caption">matchs gagnés</span></div><div class="card-bottom-note"><span class="mini-dot win-dot"></span><span id="winrate">En attente du premier match</span></div></article>
-          <article class="stat-card loss-stat"><div class="card-kicker">DÉFAITES <span class="card-symbol">↘</span></div><div class="record-main"><strong class="loss-color" id="lossesCount">0</strong><span class="record-caption">matchs perdus</span></div><div class="card-bottom-note"><span class="mini-dot loss-dot"></span><span>Résultats de la session</span></div></article>
-          <article class="stat-card streak-card"><div class="card-kicker">SÉRIE ACTUELLE <span class="card-symbol">ϟ</span></div><div class="streak-main"><strong id="streakCount">—</strong><div><b id="streakName">Aucune série</b><span id="streakCaption">Prête à commencer</span></div></div><div class="streak-bars" id="streakBars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="stat-card loss-stat"><div class="card-kicker">DÉFAITES</div><div class="record-main"><strong class="loss-color" id="lossesCount">0</strong><span class="record-caption">matchs perdus</span></div><div class="card-bottom-note"><span class="mini-dot loss-dot"></span><span id="lossrate">0 % des matchs</span></div></article>
+          <article class="stat-card streak-card"><div class="card-kicker">SÉRIE ACTUELLE</div><div class="streak-main"><strong id="streakCount">—</strong><div><b id="streakName">Aucune série</b><span id="streakCaption">0 match consécutif</span></div></div><div class="recent-form-label">5 DERNIERS MATCHS</div><div class="recent-form" id="recentForm"><span class="recent-form-empty">—</span></div></article>
         </div>
 
         <div class="content-grid">
           <section class="panel match-panel">
-            <div class="panel-heading"><div><span class="eyebrow">EN UN CLIC</span><h3>Résultat du match</h3></div><span class="auto-badge" id="autoBadge"><span class="status-dot"></span> AUTO</span></div>
-            <p class="muted small">Les résultats arrivent automatiquement quand l’API du jeu est activée.</p>
-            <div class="result-buttons"><button class="result-button win-button" id="manualWin"><span class="result-icon">+</span><span><b>Ajouter une victoire</b><small>Correction manuelle</small></span></button><button class="result-button loss-button" id="manualLoss"><span class="result-icon">−</span><span><b>Ajouter une défaite</b><small>Correction manuelle</small></span></button></div>
+            <div class="panel-heading"><div><span class="eyebrow">MATCH</span><h3>Résultat du match</h3></div></div>
+            <p class="muted small">Les résultats sont détectés depuis Rocket League.</p>
+            <div class="result-buttons"><button class="result-button win-button" id="manualWin"><span class="result-icon">+</span><span><b>Ajouter une victoire</b><small>Saisie manuelle</small></span></button><button class="result-button loss-button" id="manualLoss"><span class="result-icon">−</span><span><b>Ajouter une défaite</b><small>Saisie manuelle</small></span></button></div>
             <div class="match-panel-foot"><span id="matchHint">Démarre une session pour suivre tes matchs.</span><button class="text-button" data-page-link="overlay">Configurer l’overlay <span>→</span></button></div>
           </section>
 
         </div>
 
         <div class="lower-grid">
-          <section class="panel mmr-entry-panel"><div class="panel-heading"><div><span class="eyebrow">SYNCHRONISATION</span><h3>Suivi automatique</h3></div><button class="tracker-link" id="trackerOpenButton">Ouvrir Tracker ↗</button></div><form class="mmr-form" id="mmrForm"><label for="currentMmrInput">Ton MMR actuel</label><div class="input-action"><input id="currentMmrInput" type="number" min="0" max="99999" placeholder="Ex. 1150" required><button type="submit" class="ghost-button" id="updateMmrButton">Mettre à jour</button></div></form><div class="tracker-status" id="trackerStatus" aria-live="polite">MMR Tracker non synchronisé</div><button class="ghost-button tracker-sync-button" id="trackerSyncButton" hidden>Synchroniser le MMR</button><button class="start-session-button" id="sessionAction">Démarrer une session <span>→</span></button><button class="end-session-link" id="endSessionButton" hidden>Terminer et réinitialiser</button></section>
+          <section class="panel mmr-entry-panel"><div class="panel-heading"><div><span class="eyebrow">MMR</span><h3>Suivi automatique</h3></div><button class="tracker-link" id="trackerOpenButton">Ouvrir Tracker ↗</button></div><form class="mmr-form" id="mmrForm"><label for="currentMmrInput">Ton MMR actuel</label><div class="input-action"><input id="currentMmrInput" type="number" min="0" max="99999" placeholder="Ex. 1150" required><button type="submit" class="ghost-button" id="updateMmrButton">Mettre à jour</button></div></form><div class="tracker-status" id="trackerStatus" aria-live="polite">MMR Tracker non synchronisé</div><button class="ghost-button tracker-sync-button" id="trackerSyncButton" hidden>Synchroniser le MMR</button><button class="start-session-button" id="sessionAction">Démarrer une session</button><button class="end-session-link" id="endSessionButton" hidden>Terminer la session</button><div class="session-tools"><button class="text-button" id="copySessionSummaryButton" hidden>Copier le bilan</button><button class="reset-session-button" id="resetSessionStatsButton" hidden>Remettre les stats à zéro</button></div></section>
         </div>
 
         <section class="players-panel panel" id="playersPanel" hidden><div class="panel-heading"><div><span class="eyebrow">IDENTIFICATION</span><h3>Qui es-tu dans le match ?</h3></div><span class="setup-step">01 / 01</span></div><p class="muted small">Choisis ton compte une fois. Overlay RL s’en servira ensuite pour reconnaître ton équipe automatiquement.</p><div class="players-list" id="playersList"></div></section>
@@ -84,7 +84,7 @@
         <div class="welcome-row"><div><div class="eyebrow">AFFICHAGE EN JEU</div><h2>Overlay RL</h2><p class="muted">Choisis une disposition et place tes stats à l’écran.</p></div><label class="switch-wrap"><span id="overlaySwitchLabel">Overlay désactivé</span><input type="checkbox" id="overlayToggle"><span class="switch"></span></label></div>
         <div class="overlay-layout">
           <section class="panel overlay-preview-panel">
-            <div class="panel-heading"><div><span class="eyebrow">APERÇU</span><h3>Rendu à l’écran</h3></div><span class="preview-live"><i></i> EN DIRECT</span></div>
+            <div class="panel-heading"><div><span class="eyebrow">APERÇU</span><h3>Overlay en jeu</h3></div></div>
             <div class="screen-preview">
               <div class="preview-widget overlay-card" id="previewWidget">
                 <div class="overlay-metric mmr-metric"><span class="metric-orb rank-orb"><img class="rank-icon current-rank-icon" data-field="rank-icon" alt="" hidden></span><div class="metric-copy"><small><span data-field="playlist">2V2</span> · MMR</small><b data-field="rank">Rang en attente</b><strong data-field="mmr">—</strong><small class="next-rank-name" data-field="next-rank"></small><span class="metric-delta" data-field="session-delta"></span><div class="rank-progress"><span></span></div></div></div>
@@ -93,7 +93,7 @@
                 <div class="overlay-metric losses-metric"><span class="metric-orb losses-orb">×</span><div class="metric-copy"><small>LOSSES</small><strong data-field="losses">0</strong></div></div>
               </div>
             </div>
-            <div class="preview-foot"><span><i class="status-dot"></i> Stats actualisées</span><span id="overlayDimensions">230 × 234 px</span></div>
+            <div class="preview-foot"><span><i class="status-dot"></i> Stats de session</span><span id="overlayDimensions">760 × 102 px</span></div>
           </section>
           <section class="overlay-options">
             <div class="panel option-panel">

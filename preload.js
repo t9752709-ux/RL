@@ -22,6 +22,8 @@ contextBridge.exposeInMainWorld('rally', {
   startSession: (mmr) => ipcRenderer.invoke('session:start', mmr),
   fetchTrackerMmr: () => ipcRenderer.invoke('tracker:fetchMmr'),
   resetSession: () => ipcRenderer.invoke('session:reset'),
+  clearSessionStats: () => ipcRenderer.invoke('session:clearStats'),
+  copyText: (text) => ipcRenderer.invoke('clipboard:writeText', text),
   recordResult: (result) => ipcRenderer.invoke('session:record', result),
   choosePlayer: (playerId) => ipcRenderer.invoke('app:choosePlayer', playerId),
   onStateChanged: (callback) => {

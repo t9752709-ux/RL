@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain, net, screen, shell } = require('electron');
+const { app, BrowserWindow, clipboard, dialog, ipcMain, net, screen, shell } = require('electron');
 const fs = require('node:fs');
 const path = require('node:path');
 const https = require('node:https');
@@ -1527,6 +1527,59 @@ ipcMain.handle('session:reset', () => {
   persistState();
   scheduleIdleMmrSync();
   return state;
+});
+ipcMain.handle('session:clearStats', () => {
+  if (!state.session.active) return state;
+  const session = state.session;
+  const hasCurrentMmr = session.currentMmr !== null && session.currentMmr !== undefined && Number.isFinite(Number(session.currentMmr));
+  const currentMmr = hasCurrentMmr ? Number(session.currentMmr) : null;
+  const startedAt = new Date().toISOString();
+  state.session = {
+    ...DEFAULT_STATE.session,
+    active: true,
+    startMmr: currentMmr,
+    currentMmr,
+    startedAt,
+    playlistId: String(session.playlistId || state.settings.playlistId || '11'),
+    auto: Boolean(session.auto),
+    history: []
+  };
+  autoStartMatchGuid = '';
+  baselineSyncSessionStartedAt = '';
+  baselineSyncAttemptAt = 0;
+  persistState();
+  if (state.session.startMmr === null) syncSessionMmrBaseline(startedAt);
+  return state;
+});
+ipcMain.handle('clipboard:writeText', (_event, text) => {
+  clipboard.writeText(String(text || ''));
+  return true;
+});
+ipcMain.handle('session:clearStats', () => {
+  if (!state.session.active) return state;
+  const session = state.session;
+  const currentMmr = Number.isFinite(Number(session.currentMmr)) ? Number(session.currentMmr) : null;
+  const startedAt = new Date().toISOString();
+  state.session = {
+    ...DEFAULT_STATE.session,
+    active: true,
+    startMmr: currentMmr ?? session.startMmr ?? null,
+    currentMmr,
+    startedAt,
+    playlistId: String(session.playlistId || state.settings.playlistId || '11'),
+    auto: Boolean(session.auto),
+    history: []
+  };
+  autoStartMatchGuid = '';
+  baselineSyncSessionStartedAt = '';
+  baselineSyncAttemptAt = 0;
+  persistState();
+  if (state.session.startMmr === null) syncSessionMmrBaseline(startedAt);
+  return state;
+});
+ipcMain.handle('clipboard:writeText', (_event, text) => {
+  clipboard.writeText(String(text || ''));
+  return true;
 });
 ipcMain.handle('app:choosePlayer', (_event, playerId) => {
   const player = connection.players.find((entry) => entry.id === playerId);
